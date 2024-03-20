@@ -76,13 +76,13 @@ func NewTaskExecutor(size ...int) *TaskExecutor {
 								_ = recover()
 								rpm.poolCounter.Add(-1)
 								rpm.wg.Done()
-							}()
-							if !rpm.shutdown.Load() {
-								ctx.fn(ctx)
 								// pop from backup queue to executor
 								if !rpm.shutdown.Load() {
 									rpm.enqueueFromBackBuffer()
 								}
+							}()
+							if !rpm.shutdown.Load() {
+								ctx.fn(ctx)
 							}
 						}()
 					}
